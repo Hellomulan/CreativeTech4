@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Dairy</title>
+    <style>
+        body {
+            background-color: rgb(48, 102, 150);
+            text-align: center;
+            color: floralwhite
+        }
+
+        h1 {
+            text-decoration: floralwhite;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 50px;
+            margin: 25px auto;
+
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;}
+
+    </style>
+</head>
+
+<body>
+    <h1>Enter your lucky number and see which pokeman will stay with you!</h1>
+    <input type="text" id="pokeid" name="">
+    <button role="button" id="trigger"> Hey! </button>
+    <section id="pokesection"></section>
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="image-section">
+                <img src="image/4.gif">
+            </div>
+        </div>
+        <div class="card">
+            <div class="image-section">
+                <img src="image/5.gif">
+            </div>
+        </div>
+        <div class="card">
+            <div class="image-section">
+                <img src="image/6.gif">
+            </div>
+        </div>
+    </div>
+
+                
+
+                <script>
+                    // alert('Hey, this triggers!')
+                    let domain = "https://pokeapi.co/api/v2/pokemon/"
+                    let pokesection = document.getElementById("pokesection")
+                    let triggerButton = document.getElementById("trigger")
+
+                    const showData = () => {
+                        // const iheader = document.createElement('h3')
+                        // iheader.innerText = "This is a sample header"
+
+                        // const para = document.createElement('p')
+                        // const node = document.createTextNode("This is a sample text")
+                        // para.appendChild(node)
+
+                        // pokesection.appendChild(iheader)
+                        // pokesection.appendChild(para)
+
+                        let pokeidStr = document.getElementById("pokeid").value
+                        let fullUrl = domain + pokeidStr
+
+                        fetch(fullUrl)
+                            .then((response) => response.json())
+                            .then((data) => appendPokeData(data))
+                    }
+
+                    const appendPokeData = (data) => {
+                        console.log()
+                        const header = document.createElement('h3')
+                        header.innerText = data.name
+                        // const para = document.createElement('p')
+                        // const abArray = JSON.parse(data.abilities)
+                        // const node = document.createTextNode(abArray[0].ability.name)
+                        // para.appendChild(node)
+
+                        pokesection.appendChild(header)
+                        // pokesection.appendChild(para)
+                    }
+
+                    triggerButton.addEventListener("click", showData)
+
+                </script>
+</body>
+
+</html>

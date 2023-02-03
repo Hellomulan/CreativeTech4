@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Web As A Rube Goldberg Machine</title>
+</head>
+<body>
+    <h1>Click the button to see where you are</h1>
+    <button role="button" id="initTrigger">Click</button>
+    <section id="NASASection"></section>
+    <h1>Click again to see what are you doing</h1>
+    <section id="cocktailSection"></section>
+
+    <p class="alignright"><a class="button" href="file:///Users/yanyiwang/Documents/GitHub/Creative-Tech-4/index4.html"
+        target="blank">Next</a></p>
+   
+    <style>
+        body {background-color: rgb(48, 102, 150); text-align: center; color:floralwhite}
+        h1 {text-decoration: floralwhite;}
+        a { background-color: chartreuse;
+            padding: 10px;
+            padding-bottom: 15px;
+            padding-right:20px;
+            padding-left: 20px;
+            text-decoration: none;
+            text-transform: uppercase;
+            top: 20px;
+            right: 25px;
+        }
+        a:hover {
+             color: chartreuse
+         } 
+    
+    </style>
+
+    <script>
+        let triggerButton = document.getElementById('initTrigger')
+        let cocktailSection = document.getElementById('cocktailSection')
+        let NASASection = document.getElementById('NASASection')
+        
+
+        const randomCocktailURL = "https://www.thecocktaildb.com/api/json/v1/1/random.php"
+
+        const nasaAPODURL = "https://api.nasa.gov/planetary/apod"
+        const nasaAPIKey = "api_key=FnoOMD28bBgT5nAR0jgL2rvV3E2AiRxz3FL45G49"
+        const nasaDate = "date=1998-04-08"
+        
+        //console.log(triggerButton)
+
+        const fetchCocktailData = () => {
+            //console.log('fetching!')
+
+            fetch(randomCocktailURL)
+            .then((payload) => payload.json())
+            .then((data) => {appendCocktailData(data)})
+        }
+
+        const appendCocktailData = (data) =>{
+            const firstDrink = data.drinks[0]
+            const drinkName = firstDrink.strDrink
+            const drinkImg = firstDrink.strDrinkThumb
+
+            const nameHeader = document.createElement('h3')
+            nameHeader.innerText = "We Had " + drinkName
+            cocktailSection.appendChild(nameHeader)
+
+            const image = document.createElement('img')
+            image.src = drinkImg
+            image.alt = "image of" + drinkName
+            cocktailSection.appendChild(image)
+
+            fetchNASAData()
+
+        }
+
+        const fetchNASAData = () => {
+            const fetchURL = nasaAPODURL + "?" + nasaAPIKey + "&" + nasaDate
+            fetch(fetchURL)
+            .then((payload) => payload.json())
+            .then((data) => appendNASAData(data))
+        }
+
+        const appendNASAData = (data) => {
+            console.log(data)
+
+            const nasaTitle = data.title
+            const NASAExplanation = data.explanation
+            const imgURL = data.url
+
+            const nasaText = document.createElement('h3')
+            nasaText.innerText = "EXPLANATION " + NASAExplanation
+
+            const nasaImg = document.createElement('img')
+            nasaImg.src = imgURL
+            nasaImg.alt = "the image of " + nasaTitle
+            
+            NASASection.appendChild(nasaImg)
+            NASASection.appendChild(nasaText)
+        }
+
+        triggerButton.addEventListener("click",fetchCocktailData)
+
+    </script>
+</body>
+</html>
